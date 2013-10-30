@@ -505,7 +505,8 @@ void doPass(const Options& opts, ld::Internal& state)
 					const ld::Atom* nextTarget = target;
 					for (int i=kIslandRegionsCount-1; i >=0 ; --i) {
 						AtomToIsland* region = regionsMap[i];
-						int64_t islandRegionAddr = kBetweenRegions * (i+1);
+						const ld::Atom* islandAtom = branchIslandInsertionPoints [i];
+						int64_t islandRegionAddr = islandAtom->sectionOffset()+islandAtom->size(); 
 						if ( (srcAddr < islandRegionAddr) && (islandRegionAddr <= dstAddr) ) { 
 							AtomToIsland::iterator pos = region->find(finalTargetAndOffset);
 							if ( pos == region->end() ) {
@@ -530,7 +531,8 @@ void doPass(const Options& opts, ld::Internal& state)
 					const ld::Atom* prevTarget = target;
 					for (int i=0; i < kIslandRegionsCount ; ++i) {
 						AtomToIsland* region = regionsMap[i];
-						int64_t islandRegionAddr = kBetweenRegions * (i+1);
+						const ld::Atom* islandAtom = branchIslandInsertionPoints [i];
+						int64_t islandRegionAddr = islandAtom->sectionOffset()+islandAtom->size(); 
 						if ( (dstAddr <= islandRegionAddr) && (islandRegionAddr < srcAddr) ) {
 							AtomToIsland::iterator pos = region->find(finalTargetAndOffset);
 							if ( pos == region->end() ) {
