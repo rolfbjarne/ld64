@@ -47,20 +47,23 @@ namespace lto {
 	extern const char* version();
 }
 
+#define CRGetCrashLogMessage() 0
+#define CRSetCrashLogMessage(x) /* nothing */
+
 // magic to place command line in crash reports
 const int crashreporterBufferSize = 2000;
 static char crashreporterBuffer[crashreporterBufferSize];
-#if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
-	#include <CrashReporterClient.h>
-	// hack until ld does not need to build on 10.6 anymore
-    struct crashreporter_annotations_t gCRAnnotations 
-        __attribute__((section("__DATA," CRASHREPORTER_ANNOTATIONS_SECTION))) 
-        = { CRASHREPORTER_ANNOTATIONS_VERSION, 0, 0, 0, 0, 0, 0 };
-#else
-	extern "C" char* __crashreporter_info__;
-	__attribute__((used)) 
-	char* __crashreporter_info__ = crashreporterBuffer;
-#endif
+// #if __MAC_OS_X_VERSION_MIN_REQUIRED >= 1070
+// //	#include <CrashReporterClient.h>
+// 	// hack until ld does not need to build on 10.6 anymore
+//     struct crashreporter_annotations_t gCRAnnotations 
+//         __attribute__((section("__DATA," CRASHREPORTER_ANNOTATIONS_SECTION))) 
+//         = { CRASHREPORTER_ANNOTATIONS_VERSION, 0, 0, 0, 0, 0, 0 };
+// #else
+// 	extern "C" char* __crashreporter_info__;
+// 	__attribute__((used)) 
+// 	char* __crashreporter_info__ = crashreporterBuffer;
+// #endif
 
 
 static bool			sEmitWarnings = true;
