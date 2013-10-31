@@ -181,6 +181,10 @@ public:
 											_target->name(), _finalTarget.atom->finalAddress());
 			}
 		}
+
+		if ((displacement >= 16777214) || (displacement < (-16777216LL)))
+			throwf("Branch target %s too far away for %s to reach", _finalTarget.atom->name (), this->name ());
+
 		// The instruction is really two instructions:
 		// The lower 16 bits are the first instruction, which contains the high
 		//   11 bits of the displacement.
