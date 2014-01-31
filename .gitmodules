@@ -1,3 +1,6 @@
 [submodule "dyld"]
 	path = dyld
 	url = https://github.com/rolfbjarne/dyld.git
+[submodule "llvm"]
+	path = llvm
+	url = http://llvm.org/git/llvm.git
