@@ -1,7 +1,7 @@
 
-XCODE=/Applications/Xcode5.app
-LLVM=/mono/main/svn/llvm/src
-DYLD=/Users/rolf/Downloads/dyld-239.3
+XCODE:=$(shell xcode-select -p)
+LLVM=$(PWD)/../../llvm
+DYLD=$(PWD)/../../dyld
 
 OBJECTS = \
 	.libs/parsers/archive_file.o \
@@ -31,30 +31,30 @@ OBJECTS = \
  	.libs/ld.o
 
 
-INC_EXTRA=-idirafter $(XCODE)/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/include -I$(LLVM)/include -I$(DYLD)/include
-SYSROOT= -isysroot $(XCODE)/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
-CXX=$(XCODE)/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
-CC=$(XCODE)/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
+INC_EXTRA=-idirafter $(XCODE)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/include -I$(LLVM)/include -I$(DYLD)/include
+SYSROOT= -isysroot $(XCODE)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
+CXX=$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
+CC=$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 
 CC_FLAGS=-g -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 \
     -mdynamic-no-pic -Werror -Wmissing-prototypes -Wreturn-type -Woverloaded-virtual -Wmissing-braces -Wparentheses -Wswitch -Wunused-function -Wunused-label \
     -Wunused-variable -Wunused-value -Wunknown-pragmas -Wfour-char-constants -Wsign-compare -Wnewline-eof -DDEBUG \
    	$(SYSROOT) \
     -fasm-blocks -Wno-invalid-offsetof -gdwarf-2 -fvisibility=hidden -fvisibility-inlines-hidden \
-    -I$(XCODE)/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/include \
-    -I$(XCODE)/Contents/Developer/usr/local/include \
-    -I$(XCODE)/Contents/Developer/usr/include \
+    -I$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/local/include \
+    -I$(XCODE)/usr/local/include \
+    -I$(XCODE)/usr/include \
      -Wall \
      -I../abstraction -I../ld -Iparsers \
      $(INC_EXTRA) \
-     -I$(XCODE)/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include
+     -I$(XCODE)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include
 
 Q_CC=  $(if $(V),,@echo "CC       $(@F)";)
 Q_LINK=$(if $(V),,@echo "LINK     $(@F)";)
 
 all: bin/custom-ld
 
-lib/libLTO.dylib: $(XCODE)/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/libLTO.dylib
+lib/libLTO.dylib: $(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/lib/libLTO.dylib
 	@mkdir -p lib
 	@cp $^ $@
 
