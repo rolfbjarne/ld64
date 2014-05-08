@@ -4,3 +4,6 @@
 [submodule "llvm"]
 	path = llvm
 	url = http://llvm.org/git/llvm.git
+[submodule "cctools"]
+	path = cctools
+	url = git@github.com:rolfbjarne/cctools

@@ -1,7 +1,8 @@
 
 XCODE:=$(shell xcode-select -p)
-LLVM=$(PWD)/../../llvm
-DYLD=$(PWD)/../../dyld
+LLVM=$(CURDIR)/../../llvm
+DYLD=$(CURDIR)/../../dyld
+CCTOOLS=$(CURDIR)/../../cctools
 
 OBJECTS = \
 	.libs/parsers/archive_file.o \
@@ -31,14 +32,14 @@ OBJECTS = \
  	.libs/ld.o
 
 
-INC_EXTRA=-idirafter $(XCODE)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/include -I$(LLVM)/include -I$(DYLD)/include
+INC_EXTRA=-idirafter $(XCODE)/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.0.sdk/usr/include -I$(LLVM)/include -I$(DYLD)/include -I$(CCTOOLS)/include
 SYSROOT= -isysroot $(XCODE)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk
 CXX=$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang++
 CC=$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 
 CC_FLAGS=-g -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-strings -O0 \
     -mdynamic-no-pic -Werror -Wmissing-prototypes -Wreturn-type -Woverloaded-virtual -Wmissing-braces -Wparentheses -Wswitch -Wunused-function -Wunused-label \
-    -Wunused-variable -Wunused-value -Wunknown-pragmas -Wfour-char-constants -Wsign-compare -Wnewline-eof -DDEBUG \
+    -Wunused-variable -Wunused-value -Wunknown-pragmas -Wfour-char-constants -Wsign-compare -Wnewline-eof -DDEBUG -DSUPPORT_ARCH_arm64 \
    	$(SYSROOT) \
     -fasm-blocks -Wno-invalid-offsetof -gdwarf-2 -fvisibility=hidden -fvisibility-inlines-hidden \
     -I$(XCODE)/Toolchains/XcodeDefault.xctoolchain/usr/local/include \
@@ -47,7 +48,7 @@ CC_FLAGS=-g -arch x86_64 -fmessage-length=0 -pipe -Wno-trigraphs -fpascal-string
      -Wall \
      -I../abstraction -I../ld -Iparsers \
      $(INC_EXTRA) \
-     -I$(XCODE)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/usr/include
+     -I$(XCODE)/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk/usr/include
 
 Q_CC=  $(if $(V),,@echo "CC       $(@F)";)
 Q_LINK=$(if $(V),,@echo "LINK     $(@F)";)
